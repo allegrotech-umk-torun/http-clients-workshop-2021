@@ -1,4 +1,4 @@
-###Zadanie 1
+##Zadanie 1
 
 Twoim zadaniem jest dodanie nowego endpointu, pozwalającego na zapisywanie danych pogodowych dla danej lokalizacji.
 Dane powinny być przechowywane w repozytorium in-memory oraz możliwe do pobrania za pomocą istniejącego endpointu typu GET.
@@ -6,7 +6,7 @@ Dane powinny być przechowywane w repozytorium in-memory oraz możliwe do pobran
 Nowy endpoint powinien wyglądać następująco:
 
 * metoda HTTP: POST
-* ścieżka: /weather
+* ścieżka: ```/weather```
 * body requestu:
     ```
     {
@@ -17,11 +17,12 @@ Nowy endpoint powinien wyglądać następująco:
         "temperature": ...
     }
     ```
-* w odpowiedzi oprócz zapisanych danych pogodowych powinien znajdować się nagłówek Location wskazujący na ścieżkę dodanego zasobu, tzn. "/weather/{id}"
-
-Dopisz test integracyjny w klasie WeatherControllerIntegrationTest sprawdzający ścieżkę pozytywną.
-
-Informacje pomocnicze:
-* do zbudowania requestu możesz użyć adnotacji @PostMapping oraz @RequestBody
-* do dodania nagłówka w odpowiedzi możesz użyć klasy UriComponentsBuilder
-* w teście integracyjnym możesz użyć metody postForEntity(...) z klasy TestRestTemplate
+* format response'u:
+  * status: 201 Created
+  * w body response'u powinny znajdować się zapisane dane pogodowe
+  * dodatkowo chcemy zwracać nagłówek ```Location``` wskazujący na ścieżkę dodanego zasobu, tzn. ```/weather?latitude=...&longitude=...```
+  
+###Kroki do wykonania
+* dopisz implementację endpointu w klasie ```WeatherController```, w celu dodania nagłówka ```Location``` w odpowiedzi użyj parametru ```uriComponentsBuilder```
+* dopisz test integracyjny w klasie ```WeatherControllerIntegrationTest``` sprawdzający ścieżkę pozytywną
+* użyj metody ```postForEntity``` z klasy ```TestRestTemplate```, możesz wzorować się na pozostałych testach

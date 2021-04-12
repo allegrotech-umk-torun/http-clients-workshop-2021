@@ -9,10 +9,11 @@ import pl.allegrotech.weatherapp.domain.Location;
 import pl.allegrotech.weatherapp.domain.Weather;
 import pl.allegrotech.weatherapp.domain.WeatherRepository;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static pl.allegrotech.weatherapp.domain.SampleWeather.weatherForWarsaw;
 
 class WeatherControllerIntegrationTest extends BaseIntegrationTest {
@@ -60,11 +61,39 @@ class WeatherControllerIntegrationTest extends BaseIntegrationTest {
         // and
         WebExceptionResponse responseBody = response.getBody();
         assertNotNull(responseBody);
-        assertEquals(NOT_FOUND.value(), responseBody.getErrorCode());
+        assertEquals(NOT_FOUND.getReasonPhrase(), responseBody.getErrorCode());
         assertEquals(
-                "Weather for location = Location{latitude=52.2297, longitude=21.0122} was not found",
+                "Weather for location = Location{latitude=52.5, longitude=21.5} was not found",
                 responseBody.getMessage()
         );
+    }
+
+    @Test
+    public void shouldAddWeatherForGivenLocation() {
+        // given
+        Weather sampleWeather = weatherForWarsaw();
+
+        // when
+        ResponseEntity<WeatherApiResponse> response = restTemplate.postForEntity(
+                "/weather",
+                sampleWeather.toApiRequest(),
+                WeatherApiResponse.class
+        );
+
+        // then
+        assertEquals(CREATED, response.getStatusCode());
+
+        // and
+        assertEquals(sampleWeather.toApiResponse(), response.getBody());
+        assertEquals(
+                String.format("http://localhost:%s/weather?latitude=52.5&longitude=21.5", port),
+                response.getHeaders().getLocation().toString()
+        );
+
+        // and
+        List<Weather> weather = weatherRepository.getAll();
+        assertEquals(1, weather.size());
+        assertEquals(sampleWeather, weather.get(0));
     }
 
     private String prepareLocalUrl(Location location) {

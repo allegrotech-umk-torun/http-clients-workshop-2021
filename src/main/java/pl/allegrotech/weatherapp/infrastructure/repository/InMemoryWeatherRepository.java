@@ -8,7 +8,19 @@ import java.util.*;
 
 public class InMemoryWeatherRepository implements WeatherRepository {
 
+    private static final List<Weather> INITIAL_WEATHER_LIST = List.of(
+            new Weather(new Location(18, 53), "Toruń", 15),
+            new Weather(new Location(23, 53), "Białystok", 9),
+            new Weather(new Location(20, 49), "Zakopane", 13),
+            new Weather(new Location(14, 53), "Szczecin", 14),
+            new Weather(new Location(22, 49), "Wetlina", 11)
+    );
+
     private final Map<Location, Weather> storage = new HashMap<>();
+
+    public InMemoryWeatherRepository() {
+        INITIAL_WEATHER_LIST.forEach(this::save);
+    }
 
     @Override
     public Weather save(Weather weather) {
@@ -27,8 +39,8 @@ public class InMemoryWeatherRepository implements WeatherRepository {
     }
 
     @Override
-    public Optional<List<Weather>> getAll() {
-        return Optional.of(new ArrayList<>(storage.values()));
+    public List<Weather> getAll() {
+        return new ArrayList<>(storage.values());
     }
 
 }
