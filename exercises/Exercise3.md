@@ -10,9 +10,11 @@ Naszym celem jest, żeby endpoint ```/forecast/weather``` zwrócił:
 2. Skonfiguruj timeouty dla klienta HTTP znajdującego się w klasie ```OpenWeatherMapClient```. 
 Możesz w tym celu dodać beana ```HttpComponentsClientHttpRequestFactory``` i użyć go przy tworzeniu RestTemplate.
 Konfigurację dodaj w klasie ```OpenWeatherMapConfig```.
-   
+
+####Testowanie
+* jak wywołać błąd po stronie klienta? możesz podać w konfiguracji nieprawidłowy apiKey
+* jak wywołać błąd związany z timeoutem? możesz podać nieprawidłowe wartości timeoutów
+
 ####Pytania dodatkowe
-* jak wywołać błąd po stronie klienta?
-* jak wywołać błąd związany z timeoutem?
 * jak wywołać błąd po stronie serwera?
 * jak testować automatycznie różne scenariusze związane z komunikacją między usługami?

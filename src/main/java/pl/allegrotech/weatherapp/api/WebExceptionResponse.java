@@ -8,7 +8,7 @@ class WebExceptionResponse {
     private final String message;
 
     WebExceptionResponse(HttpStatus httpStatus, String message) {
-        this.errorCode = httpStatus.name();
+        this.errorCode = httpStatus != null ? httpStatus.name() : null;
         this.message = message;
     }
 

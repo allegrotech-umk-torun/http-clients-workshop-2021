@@ -61,7 +61,7 @@ class WeatherControllerIntegrationTest extends BaseIntegrationTest {
         // and
         WebExceptionResponse responseBody = response.getBody();
         assertNotNull(responseBody);
-        assertEquals(NOT_FOUND.getReasonPhrase(), responseBody.getErrorCode());
+        assertEquals(NOT_FOUND.name(), responseBody.getErrorCode());
         assertEquals(
                 "Weather for location = Location{latitude=52.5, longitude=21.5} was not found",
                 responseBody.getMessage()
